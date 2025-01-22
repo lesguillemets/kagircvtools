@@ -30,6 +30,6 @@ pub fn save_mats_as(
     for (i, im) in imgs.iter().enumerate() {
         let serial = i + serial_start;
         let file = dir.join(format!("{base_name}_fr{serial:04}.{ext}"));
-        println!("{file:?}");
+        save_mat_to(file.to_str().unwrap(), im);
     }
 }
