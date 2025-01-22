@@ -28,6 +28,7 @@ pub fn get_frame_fromto(
     Ok(frames)
 }
 
+/// nth frame (0-indexed) を取り出す．
 pub fn get_nth_frame(vc: &mut VideoCapture, n: usize) -> opencv::error::Result<Mat> {
     let mut img = Mat::default();
     for _ in 0..n {
