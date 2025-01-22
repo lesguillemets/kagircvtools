@@ -11,24 +11,15 @@ pub fn save_mat_to(filename: &str, img: &Mat) -> () {
 }
 
 /// * 一連のフレームを`{base_name}_fr{serial}.{ext}` で保存
-/// * `&[Mat]`: 保存したい [Mat] の列
+/// * `&[(usize, Mat)]`: 保存したい [Mat] と，それに振るべき番号の列
 /// * dir: 保存先のディレクトリ
-/// * serial_start (defaults to 0): 連番の始まり
-pub fn save_mats_as(
-    base_name: &str,
-    dir: &str,
-    ext: &str,
-    imgs: &[Mat],
-    serial_start: Option<usize>,
-) {
+pub fn save_mats_as(base_name: &str, dir: &str, ext: &str, imgs: &[(usize, Mat)]) {
     // TODO: 桁数
-    let mut dir = PathBuf::from(dir);
+    let dir = PathBuf::from(dir);
     if !dir.is_dir() {
         panic!("video::base::save_mats_as: dir not directory");
     }
-    let serial_start = serial_start.unwrap_or(0);
-    for (i, im) in imgs.iter().enumerate() {
-        let serial = i + serial_start;
+    for (serial, im) in imgs.iter() {
         let file = dir.join(format!("{base_name}_fr{serial:04}.{ext}"));
         save_mat_to(file.to_str().unwrap(), im);
     }
