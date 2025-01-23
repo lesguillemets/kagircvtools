@@ -10,6 +10,7 @@ fn main() {
             file,
             frames,
             out_dir,
+            ext,
         } => {
             let file_path = Path::new(&file);
             let base_name = file_path
@@ -25,7 +26,7 @@ fn main() {
                 spawn_setting: SpawnSettings {
                     base_name,
                     dir: out_dir.to_owned(),
-                    ext: String::from("png"),
+                    ext: ext.unwrap_or(String::from("png")),
                 },
             };
             g.run()
@@ -44,9 +45,11 @@ enum Commands {
     GetNth {
         #[arg(long)]
         file: String,
-        #[arg(long)]
+        #[arg(long, num_args=1..)]
         frames: Vec<usize>,
         #[arg(short, long)]
         out_dir: String,
+        #[arg(long)]
+        ext: Option<String>,
     },
 }
