@@ -79,6 +79,7 @@ pub enum FrameSetting {
     Frames(Vec<usize>),
 }
 
+#[derive(Debug)]
 pub struct GetNthFrame {
     file: String,
     frame_setting: FrameSetting,
