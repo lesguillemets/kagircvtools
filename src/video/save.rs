@@ -30,7 +30,7 @@ pub fn save_mats_as(stg: &SpawnSettings, imgs: &[(usize, Mat)]) {
 #[derive(Debug)]
 /// 連番でできるたくさんのファイルを保存するような場合の設定
 pub struct SpawnSettings {
-    base_name: String,
-    dir: String,
-    ext: String,
+    pub base_name: String,
+    pub dir: String,
+    pub ext: String,
 }

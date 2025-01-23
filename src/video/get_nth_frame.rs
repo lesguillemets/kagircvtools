@@ -81,9 +81,9 @@ pub enum FrameSetting {
 
 #[derive(Debug)]
 pub struct GetNthFrame {
-    file: String,
-    frame_setting: FrameSetting,
-    spawn_setting: SpawnSettings,
+    pub file: String,
+    pub frame_setting: FrameSetting,
+    pub spawn_setting: SpawnSettings,
 }
 
 impl GetNthFrame {
