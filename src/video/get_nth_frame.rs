@@ -1,6 +1,9 @@
 use opencv::prelude::*;
 use opencv::videoio::VideoCapture;
 
+use crate::video::load::load_video;
+use crate::video::save::{save_mats_as, SpawnSettings};
+
 /// from-th frame から to-th frame まで (to-th は含まない) をとる
 ///
 /// * 途中でフレームが空になっても許容することにするが，そこは飛ばす
@@ -77,5 +80,31 @@ pub enum FrameSetting {
 }
 
 pub struct GetNthFrame {
-    setting: FrameSetting,
+    file: String,
+    frame_setting: FrameSetting,
+    spawn_setting: SpawnSettings,
+}
+
+impl GetNthFrame {
+    pub fn run(&self) {
+        let (mut vc, c) = load_video(&self.file).unwrap();
+        if c == 0 {
+            panic!("GetNthFrame::run: loaded video with zero frame");
+        }
+        let frames_to_save: Vec<(usize, Mat)> = match &self.frame_setting {
+            &FrameSetting::Single(n) => {
+                let f = get_nth_frame(&mut vc, n).unwrap();
+                vec![(n, f)]
+            }
+            &FrameSetting::Seq(from, to) => {
+                let fs = get_frame_fromto(&mut vc, from, to).unwrap();
+                fs.into_iter()
+                    .enumerate()
+                    .map(|(i, f)| (i + from, f))
+                    .collect()
+            }
+            FrameSetting::Frames(ns) => get_nth_frames(&mut vc, &ns[..]).unwrap(),
+        };
+        save_mats_as(&self.spawn_setting, &frames_to_save);
+    }
 }
